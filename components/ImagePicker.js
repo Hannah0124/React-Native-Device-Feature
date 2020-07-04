@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Button, Text, Image, StyleSheet, Alert } from 'react-native';
 import * as ImagePicker from 'expo-image-picker'; // open camera!
 import Colors from '../constants/Colors';
 import * as Permissions from 'expo-permissions'; //  expo install expo-permissions
 
 const ImgPicker = props => {
+
+  const [pickedImage, setPickedImage] = useState();
 
   // Ask permission for IOS (Android doesnt need this!)
   const verifyPermissions = async() => {
@@ -32,21 +34,32 @@ const ImgPicker = props => {
     }
 
     // can continue
-    ImagePicker.launchCameraAsync(); // it's async because we dont know when a user will open a camera!
+    const image = await ImagePicker.launchCameraAsync({
+      allowsEditing: true, // crop
+      aspect: [16, 9],
+      quality: 0.5
+    }); // it's async because we dont know when a user will open a camera!
 
+    // console.log(image);
+
+    setPickedImage(image.uri); // got image!
   };
 
   return (
     <View style={styles.imagePicker}>
       <View style={styles.imagePreview}>
-        <Text>No image picked yet.</Text>
-        <Image style={styles.image} />
-        <Button 
-          title="Take Image" 
-          color={Colors.primary} 
-          onPress={takeImageHandler} // open up the camera, and display it to the user
-        />
+        {!pickedImage ? (
+          <Text>No image picked yet.</Text>
+          ) : ( 
+          <Image style={styles.image} source={{uri: pickedImage}} />)} 
+          {/* show image */}
       </View>
+
+      <Button 
+        title="Take Image" 
+        color={Colors.primary} 
+        onPress={takeImageHandler} // open up the camera, and display it to the user
+      />
     </View>
   )
 };
