@@ -1,3 +1,4 @@
+import React from 'react';
 import { Platform } from 'react-native';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createAppContainer } from 'react-navigation';
@@ -18,7 +19,7 @@ const PlacesNavigator = createStackNavigator({
     headerStyle: {
       backgroundColor: Platform.OS === 'android' ? Colors.primary : ''
     },
-    headerTineColor: Platform.OS === 'android' ? 'white' : Colors.pirmary
+    headerTintColor: Platform.OS === 'android' ? 'white' : Colors.pirmary
   }
 });
 
