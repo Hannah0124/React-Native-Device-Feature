@@ -1,4 +1,4 @@
-import * FileSystem from 'expo-file-system';
+import * as FileSystem from 'expo-file-system';
 
 export const ADD_PLACE = 'ADD_PLACE';
 
