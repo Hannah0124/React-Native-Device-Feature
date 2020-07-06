@@ -1,34 +1,33 @@
 import React, { useState } from 'react';
-import { View, Button, Text, Image, StyleSheet, Alert } from 'react-native';
+import { View, Button, Image, Text, StyleSheet, Alert } from 'react-native';
 import * as ImagePicker from 'expo-image-picker'; // open camera!
-import Colors from '../constants/Colors';
 import * as Permissions from 'expo-permissions'; //  expo install expo-permissions
 
-const ImgPicker = props => {
+import Colors from '../constants/Colors';
 
+const ImgPicker = props => {
   const [pickedImage, setPickedImage] = useState();
 
   // Ask permission for IOS (Android doesnt need this!)
-  const verifyPermissions = async() => {
-    const result = await Permissions.askAsync(Permissions.CAMERA, Permissions.CAMERA_ROLL) // ask for Camera permission
+  const verifyPermissions = async () => {
+    const result = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+    // ask for Camera permission
     // Permissions.askAsync(Permissions.CAMERA_ROLL) // Galllery permission
 
-    if (result.status != 'granted') {
-      Alert.alert(
-        'Insufficient permissions!', 
-        'You need to grant camera permissions to use this app', 
-        [{text: 'Okay'}]
-      );
 
+    if (result.status !== 'granted') {
+      Alert.alert(
+        'Insufficient permissions!',
+        'You need to grant camera permissions to use this app.',
+        [{ text: 'Okay' }]
+      );
       return false;
     }
-
     return true; // permission granted
   };
 
   const takeImageHandler = async () => {
     const hasPermission = await verifyPermissions();
-
     if (!hasPermission) {
       return; // cannot continue
     }
@@ -51,18 +50,17 @@ const ImgPicker = props => {
       <View style={styles.imagePreview}>
         {!pickedImage ? (
           <Text>No image picked yet.</Text>
-          ) : ( 
-          <Image style={styles.image} source={{uri: pickedImage}} />)} 
-          {/* show image */}
+        ) : (
+          <Image style={styles.image} source={{ uri: pickedImage }} />
+        )}
       </View>
-
-      <Button 
-        title="Take Image" 
-        color={Colors.primary} 
+      <Button
+        title="Take Image"
+        color={Colors.primary}
         onPress={takeImageHandler} // open up the camera, and display it to the user
       />
     </View>
-  )
+  );
 };
 
 const styles = StyleSheet.create({
